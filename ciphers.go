@@ -393,7 +393,7 @@ func newSeal(c *Cipher, k []byte) (*sealCipherCtx, error) {
 
 	if 0 == C.EVP_SealInit(ctx.ctx, c.ptr,
 		(**C.uchar)(unsafe.Pointer((*C.uchar)(&symKey[0]))),
-		(*C.int)(&symKeySize),
+		(*C.int)(&C.int(symKeySize)),
 		(*C.uchar)(&IV[0]),
 		(**C.EVP_PKEY)(unsafe.Pointer(key.evpPKey())),
 		C.int(1)) {
