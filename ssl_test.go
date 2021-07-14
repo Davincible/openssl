@@ -25,7 +25,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/davincible/openssl/utils"
+	"github.com/Davincible/openssl/utils"
 )
 
 var (
