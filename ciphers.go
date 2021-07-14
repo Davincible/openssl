@@ -392,10 +392,10 @@ func newSeal(c *Cipher, k []byte) (*sealCipherCtx, error) {
 	var symKeySize int
 
 	if 0 == C.EVP_SealInit(ctx.ctx, c.ptr,
-		unsafe.Pointer((*C.uchar)(&symKey[0])),
+		(**C.uchar)(unsafe.Pointer((*C.uchar)(&symKey[0]))),
 		(*C.int)(&symKeySize),
 		(*C.uchar)(&IV[0]),
-		unsafe.Pointer(key.evpPKey()),
+		(**C.EVP_PKEY)(unsafe.Pointer(key.evpPKey())),
 		C.int(1)) {
 		return nil, errors.New("failed to initialize cipher context")
 	}
