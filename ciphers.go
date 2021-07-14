@@ -364,3 +364,52 @@ func (ctx *decryptionCipherCtx) DecryptFinal() ([]byte, error) {
 	runtime.KeepAlive(ctx)
 	return outbuf[:outlen], nil
 }
+
+type sealCipherCtx struct {
+	*cipherCtx
+	IV     []byte
+	symKey []byte
+}
+
+func newSeal(c *Cipher, k []byte) (*sealCipherCtx, error) {
+	if c == nil {
+		return nil, errors.New("null cipher not allowed")
+	}
+
+	ctx, err := newCipherCtx()
+	if err != nil {
+		return nil, err
+	}
+
+	key, err := LoadPublicKeyFromPEM(k)
+	if err != nil {
+		return nil, err
+	}
+	pkeySize := C.EVP_PKEY_size(key.evpPKey())
+	symKey := make([]byte, pkeySize)
+
+	IV := make([]byte, ctx.IVSize())
+	var symKeySize int
+
+	if 0 == C.EVP_SealInit(ctx.ctx, c.ptr,
+		unsafe.Pointer((*C.uchar)(&symKey[0])),
+		(*C.int)(&symKeySize),
+		(*C.uchar)(&IV[0]),
+		unsafe.Pointer(key.evpPKey()),
+		C.int(1)) {
+		return nil, errors.New("failed to initialize cipher context")
+	}
+	// not sure if all of these are needed
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(c)
+	runtime.KeepAlive(symKey)
+	runtime.KeepAlive(symKeySize)
+	runtime.KeepAlive(IV)
+	runtime.KeepAlive(key)
+
+	return &sealCipherCtx{cipherCtx: ctx, IV: IV, symKey: symKey[:symKeySize]}, nil
+}
+
+func NewSeal(c *Cipher, k []byte) (*sealCipherCtx, error) {
+	return newSeal(c, k)
+}

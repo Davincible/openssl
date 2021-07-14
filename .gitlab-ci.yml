@@ -25,8 +25,8 @@ test:unit:
 
     # Prepare GO path
     - mkdir -p /go/src/github.com/mendersoftware
-    - cp -r $CI_PROJECT_DIR /go/src/github.com/mendersoftware/openssl
-    - cd /go/src/github.com/mendersoftware/openssl
+    - cp -r $CI_PROJECT_DIR /go/src/github.com/davincible/openssl
+    - cd /go/src/github.com/davincible/openssl
 
     # Install code coverage / coveralls tooling
     - go get -u github.com/axw/gocov/gocov
