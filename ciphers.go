@@ -388,7 +388,7 @@ func newSeal(c *Cipher, k []byte) (*sealCipherCtx, error) {
 	pkeySize := C.EVP_PKEY_size(key.evpPKey())
 	symKey := make([]byte, pkeySize)
 
-	IV := make([]byte, ctx.IVSize())
+	IV := make([]byte, 12)
 	var symKeySize C.int
 
 	if 0 == C.EVP_SealInit(ctx.ctx, c.ptr,
