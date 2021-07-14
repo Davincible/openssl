@@ -71,6 +71,10 @@ func getGCMCipher(blocksize int) (*Cipher, error) {
 	return &Cipher{ptr: cipherptr}, nil
 }
 
+func GetGCMCipher(blocksize int) (*Cipher, error) {
+	return getGCMCipher(blocksize)
+}
+
 func NewGCMEncryptionCipherCtx(blocksize int, e *Engine, key, iv []byte) (
 	AuthenticatedEncryptionCipherCtx, error) {
 	cipher, err := getGCMCipher(blocksize)
