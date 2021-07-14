@@ -49,8 +49,8 @@ const int X_ED25519_SUPPORT = 1;
 int X_EVP_PKEY_ED25519 = EVP_PKEY_ED25519;
 
 int X_EVP_SealInit(EVP_MD_CTX *ctx, const EVP_MD *type, unsigned char **ek, 
-		int *ekl, unsigned char **iv, EVP_PKEY **pubk, int npubk) {
-	return EVP_SealInit(ctx, type, ek, ekl, pubk, npubk);
+		int *ekl, unsigned char *iv, EVP_PKEY **pubk, int npubk) {
+	return EVP_SealInit(ctx, type, ek, ekl, iv, pubk, npubk);
 
 }
 
